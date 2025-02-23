@@ -1,0 +1,44 @@
+mport java.util.Scanner;
+
+public class Main {
+
+    // Caesar Cipher: shifts letters forward (encryption) or backward (decryption)
+    public static String caesarCipher(String text, int shift, boolean encrypt) {
+        if (!encrypt) {
+            shift = -shift; // Reverse shift if decrypting
+        }
+        
+        StringBuilder result = new StringBuilder();
+        
+        for (char character : text.toCharArray()) {
+            if (Character.isLetter(character)) { // Only process letters
+                char base = Character.isLowerCase(character) ? 'a' : 'A'; // Find if it's uppercase or lowercase
+                character = (char) ((character - base + shift + 26) % 26 + base); // Shift within alphabet bounds
+            }
+            result.append(character); // Add to result
+        }
+        
+        return result.toString();
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("Enter a string to encrypt:"); // Get user input
+        String input = scanner.nextLine();
+
+        System.out.println("Enter shift value:"); // Get shift amount
+        int shift = scanner.nextInt();
+        scanner.nextLine(); // Fix newline issue
+
+        // Encrypt text
+        String encrypted = caesarCipher(input, shift, true);
+        System.out.println("Encrypted: " + encrypted);
+
+        // Decrypt text (should return original)
+        String decrypted = caesarCipher(encrypted, shift, false);
+        System.out.println("Decrypted: " + decrypted);
+
+        scanner.close(); // Close scanner to avoid resource leaks
+    }
+}
